@@ -4,7 +4,7 @@ import { totalCombos } from "./main.js";
 
 export function main()
 {
-  test("totalCombos shoudl be 8", () =>
+  test("totalCombos should be 8", () =>
   {
     const input = [
       16,
@@ -21,7 +21,7 @@ export function main()
     ];
     return assertEquals(totalCombos(input), 8);
   });
-  test("totalCombos shoudl be 19208", () =>
+  test("totalCombos should be 19208", () =>
   {
     const input = [
       28,

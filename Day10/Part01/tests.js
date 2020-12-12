@@ -4,7 +4,7 @@ import { joltageDiff } from "./main.js";
 
 export function main()
 {
-  test("joltageDiff shoudl be 35", () =>
+  test("joltageDiff should be 35", () =>
   {
     const input = [
       16,
@@ -21,7 +21,7 @@ export function main()
     ];
     return assertEquals(joltageDiff(input), 7 * 5);
   });
-  test("joltageDiff shoudl be 220", () =>
+  test("joltageDiff should be 220", () =>
   {
     const input = [
       28,
