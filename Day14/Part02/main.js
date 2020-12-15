@@ -5,9 +5,9 @@ import { log } from "../../app.js";
  * @param {number} value 
  * @returns {string[]}
  */
-function decimalToBinary(value)
+function decimalToBinary( value )
 {
-  return value.toString(2).split("").reverse();
+  return value.toString( 2 ).split( "" ).reverse();
 }
 
 /**
@@ -15,13 +15,13 @@ function decimalToBinary(value)
  * @param {string[]} binary 
  * @return {bigint}
  */
-function binaryToBigInt(binary)
+function binaryToBigInt( binary )
 {
   let result = 0n;
-  let len = BigInt(binary.length);
-  for (let i = 0n; i < len; i++)
+  let len = BigInt( binary.length );
+  for ( let i = 0n; i < len; i++ )
   {
-    if (binary[i] === "1")
+    if ( binary[ i ] === "1" )
     {
       result += 2n ** i;
     }
@@ -34,21 +34,21 @@ function binaryToBigInt(binary)
  * @param {string[]} value 
  * @param {string[]} mask 
  */
-function applyMask(value, mask)
+function applyMask( value, mask )
 {
-  for (let i = 0; i < mask.length; i++)
+  for ( let i = 0; i < mask.length; i++ )
   {
-    if (mask[i] === "1")
+    if ( mask[ i ] === "1" )
     {
-      value[i] = "1";
+      value[ i ] = "1";
     }
-    else if (mask[i] === "0")
+    else if ( mask[ i ] === "0" )
     {
-      value[i] = value[i] || 0;
+      value[ i ] = value[ i ] || 0;
     }
     else
     {
-      value[i] = "X"
+      value[ i ] = "X";
     }
   }
   return value;
@@ -57,57 +57,78 @@ function applyMask(value, mask)
 /**
  * @param {string} input 
  */
-export function calculateTotalValue(input)
+export function calculateTotalValue( input )
 {
-  let mask = ["X"];
-  let memory = [0n];
+  let mask = [ "X" ];
+  let memory = new Map();
 
   /**
    * 
-   * @param {number} index 
+   * @param {number} baseIndex 
    * @param {string[]} mask 
    * @param {bigint} value 
    */
-  const mem = (index, mask, value) =>
+  const mem = ( baseIndex, mask, value ) =>
   {
-    const indexes = [];
-    const binaryIndex = decimalToBinary(index);
-    const maskedIndex = applyMask(binaryIndex, mask);
-    log(maskedIndex);
+    const indexes = [ 0 ];
+    const binaryIndex = decimalToBinary( baseIndex );
+    const maskedIndex = applyMask( binaryIndex, mask );
 
-    memory[index] = value;
+    let bitIndex = 0;
+    for ( const bit of maskedIndex )
+    {
+      if ( bit === "1" )
+      {
+        for ( let i = 0; i < indexes.length; i++ )
+        {
+          indexes[ i ] += 2 ** bitIndex;
+        }
+      }
+      else if ( bit === "X" )
+      {
+        const copy = [ ...indexes ];
+        for ( let i = 0; i < copy.length; i++ )
+        {
+          copy[ i ] += 2 ** bitIndex;
+        }
+        indexes.push( ...copy );
+      }
+      bitIndex++;
+    }
+
+    for ( const index of indexes )
+    {
+      memory.set( index, value );
+    }
   };
 
-  let program = input.split("\n");
-  for (const line of program)
+  let program = input.split( "\n" );
+  for ( const line of program )
   {
-    const op = line.split(" = ")[0];
-    const value = line.split(" = ")[1];
+    const op = line.split( " = " )[ 0 ];
+    const value = line.split( " = " )[ 1 ];
 
-    if (op === "mask")
+    if ( op === "mask" )
     {
-      mask = value.split("").reverse();
+      mask = value.split( "" ).reverse();
     }
     else
     {
-      const index = parseInt(op.match(/\d+/)[0]);
-      const bigintValue = BigInt(parseInt(value));
-      mem(index, mask, bigintValue);
+      const index = parseInt( op.match( /\d+/ )[ 0 ] );
+      const bigintValue = BigInt( parseInt( value ) );
+      mem( index, mask, bigintValue );
     }
   }
 
   let result = 0n;
-  for (let i = 0; i < memory.length; i++)
+  for ( const [ index, value ] of memory )
   {
-    if (memory[i])
-    {
-      result += memory[i];
-    }
+    result += value;
   }
   return result;
 }
 
 export function main()
 {
-  log(`Input Result: ${ calculateTotalValue(input) }`);
+  log( `Input Result: ${ calculateTotalValue( input ) }` );
 }
