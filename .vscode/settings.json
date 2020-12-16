@@ -7,5 +7,7 @@
   "javascript.referencesCodeLens.showOnAllFunctions": true,
   "javascript.referencesCodeLens.enabled": true,
   "javascript.preferences.importModuleSpecifierEnding": "js",
-  "javascript.implicitProjectConfig.checkJs": true
+  "javascript.implicitProjectConfig.checkJs": true,
+  "editor.fontFamily": "'Victor Mono', monospace",
+  "editor.fontLigatures": true
 }

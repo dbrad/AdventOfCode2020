@@ -17,7 +17,7 @@ export const dayElement = document.querySelector("#day");
 export const consoleElement = document.querySelector("#console");
 
 
-const dayNumber = 14;
+const dayNumber = 15;
 const days = [...Array(dayNumber).keys()];
 
 function clearConsole()

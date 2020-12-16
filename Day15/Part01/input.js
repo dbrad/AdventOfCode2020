@@ -1,0 +1,1 @@
+export const input = [6, 3, 15, 13, 1, 0];
